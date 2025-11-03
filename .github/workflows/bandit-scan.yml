@@ -1,0 +1,27 @@
+name: Bandit Scan
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["**"]
+
+permissions: {}
+
+jobs:
+  Bandit:
+    name: Run Bandit scan
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read # only needed for private repos
+      actions: read # only needed for private repos
+    steps:
+      - name: Checkout repository
+        uses: mdegis/bandit-action@v1.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: "."
+          level: high
+          confidence: high
+          exit_zero: true
