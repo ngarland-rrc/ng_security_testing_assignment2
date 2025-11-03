@@ -1,8 +1,11 @@
 name: Bandit
 
 on:
-  workflow_dispatch:
-
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["**"]
+  
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -12,6 +15,10 @@ jobs:
       # only required for workflows in private repositories
       actions: read
       contents: read
+    
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        
       - name: Perform Bandit Analysis
         uses: PyCQA/bandit-action@v1
